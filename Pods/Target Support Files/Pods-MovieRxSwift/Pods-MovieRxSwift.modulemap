@@ -1,0 +1,6 @@
+framework module Pods_MovieRxSwift {
+  umbrella header "Pods-MovieRxSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}
