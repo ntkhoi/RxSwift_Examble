@@ -15,13 +15,13 @@ class MainViewController: UIViewController, UITableViewDelegate {
     fileprivate var navigator: Navigator!
     fileprivate var viewModel: MovieViewModelType!
     fileprivate let disposeBag = DisposeBag()
-
     
+    fileprivate var movies: Observable<[Movie]>?
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView! {
         didSet{
             tableView.estimatedRowHeight = 141
             tableView.rowHeight = UITableViewAutomaticDimension
-            
         }
     }
     
@@ -33,9 +33,10 @@ class MainViewController: UIViewController, UITableViewDelegate {
     }
     
     override func viewDidLoad() {
-        self.navigationItem.title = "Top Rated"
+        self.navigationItem.title = "Home Scene"
         super.viewDidLoad()
-        viewModel
+        
+        movies = viewModel
           .fetchMovies().debug()
           .map { (result) -> [Movie] in
             switch result {
@@ -45,13 +46,24 @@ class MainViewController: UIViewController, UITableViewDelegate {
                 print("Fetch Movie error : \(error.localizedDescription)")
                 return []
             }
-        }
-      .drive(tableView.rx.items(cellIdentifier: String(describing: MovieCell.self), cellType: MovieCell.self)){ row, movie, cell in
-            cell.movie = movie
-        }
-        .addDisposableTo(disposeBag)
+        }.asObservable()
+        
+        
+        // Not finish yet
+        searchBar.rx.text.orEmpty
+        .debounce(0.3, scheduler: MainScheduler.instance)
+        .distinctUntilChanged()
+        .filter { !$0.isEmpty }
+        .subscribe(onNext: { [unowned self] (query) in
+            self.movies = self.movies?
+                .map{ $0.filter{ $0.title.contains(query)} }
+        }).addDisposableTo(disposeBag)
+        
+        movies?.bind(to: tableView.rx.items(cellIdentifier: String(describing: MovieCell.self), cellType: MovieCell.self)) {  row, movie, cell in
+                cell.movie = movie
+            
+        }.addDisposableTo(disposeBag)
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

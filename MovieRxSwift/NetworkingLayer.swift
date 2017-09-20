@@ -48,7 +48,7 @@ struct NetworkingLayer {
             .do(onNext: { _ in
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             })
-            .asDriver(onErrorJustReturn: .failure(CommonError.parsingError)) // This also makes sure that we are on MainScheduler
+            .asDriver(onErrorJustReturn: .failure(CommonError.parsingError))
     }
 
 }

@@ -27,7 +27,7 @@ class Movie: Mappable {
     public func mapping(map: Map) {
         title <- map["title"]
         overview <- map["overview"]
-        posterUrl <- (map["poster_path"], PosterUrlTransform() )
+        posterUrl <- (map["poster_path"], PosterUrlTransform())
 
     }
     
