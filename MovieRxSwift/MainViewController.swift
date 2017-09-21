@@ -15,14 +15,13 @@ class MainViewController: UIViewController, UITableViewDelegate {
     fileprivate var navigator: Navigator!
     fileprivate var viewModel: MovieViewModelType!
     
-    
     fileprivate let disposeBag = DisposeBag()
     
     // TODO : Movie search logic to viewmodel
-    
     fileprivate var movies = Variable<[Movie]>([])
     fileprivate var fetchedMovies: [Movie]  = []
     
+    var refeshControl: UIRefreshControl?
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView! {
         didSet{
@@ -30,7 +29,6 @@ class MainViewController: UIViewController, UITableViewDelegate {
             tableView.rowHeight = UITableViewAutomaticDimension
         }
     }
-    
     
     // Duplicate in each VC
     // TODO : Create generic method to new ViewController
@@ -44,23 +42,25 @@ class MainViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Home Scene"
+        refeshControl = UIRefreshControl()
+        tableView.insertSubview(refeshControl!, at: 0)
         
-        viewModel
-            .fetchMovies().debug()
-            .map { (result) -> [Movie] in
-                switch result {
-                case .success(let movies):
-                    print("case .success(let movies):")
-                    self.fetchedMovies = movies
-                    self.movies.value = movies
-                    return movies
-                case .failure(let error):
-                    print("Fetch Movie error : \(error.localizedDescription)")
-                    return []
-                }
-            }.asObservable()
-            .subscribe()
-            .addDisposableTo(disposeBag)
+        refeshControl?.rx.controlEvent(.valueChanged)
+            .flatMapLatest{ [unowned self] _ in
+                return self.viewModel.fetchMovies()
+            }.subscribe(onNext: {[unowned self] (movies) in
+                self.movies.value = movies
+                self.fetchedMovies = movies
+                // Cheat code . Should use rxcoacoa binding to end refeshing
+                self.refeshControl?.endRefreshing()
+            }).addDisposableTo(disposeBag)
+        
+
+        viewModel.fetchMovies()
+        .subscribe(onNext: {[unowned self] (movies) in
+            self.movies.value = movies
+            self.fetchedMovies = movies
+        }).addDisposableTo(disposeBag)
         
         movies.asObservable()
             .bind(to: tableView.rx.items(cellIdentifier: String(describing: MovieCell.self), cellType: MovieCell.self)) {
@@ -80,7 +80,6 @@ class MainViewController: UIViewController, UITableViewDelegate {
                 }
             }).addDisposableTo(disposeBag)
         
-        
         // TODO : Move this.navigator to viewmodels
         tableView
             .rx
@@ -92,3 +91,4 @@ class MainViewController: UIViewController, UITableViewDelegate {
             .addDisposableTo(disposeBag)
     }
 }
+    
