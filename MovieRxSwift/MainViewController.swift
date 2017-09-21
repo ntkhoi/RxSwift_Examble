@@ -14,9 +14,11 @@ class MainViewController: UIViewController, UITableViewDelegate {
     
     fileprivate var navigator: Navigator!
     fileprivate var viewModel: MovieViewModelType!
+    
+    
     fileprivate let disposeBag = DisposeBag()
     
-    
+    // TODO : Movie search logic to viewmodel
     private var movies = Variable<[Movie]>([])
     private var fetchedMovies: [Movie]  = []
     
@@ -73,9 +75,5 @@ class MainViewController: UIViewController, UITableViewDelegate {
                     self.movies.value = self.fetchedMovies.filter{ $0.title.lowercased().contains(query.lowercased()) }
                 }
             }).addDisposableTo(disposeBag)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 }
