@@ -34,8 +34,16 @@ class MovieInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO:
-        // Change to binding UI to view model .
+// TODO:
+// Change to binding UI to view model .
+//        MARK : Examble binding to viewmodel
+//        self.textField.rx.text.orEmpty
+//            .map { text in
+//                return return String(text.prefix(5))
+//            }
+//            .bind(to: viewModel.textFiledInputText)
+//            .addDisposableTo(self.disposeBag)
+        
         
         viewModel.title
             .bind(to: titleLabel.rx.text)
