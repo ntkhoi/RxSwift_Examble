@@ -15,17 +15,10 @@ import Alamofire
 //this protocol represents a repository view model then anyone can implement this and perform the fetch.
 protocol MovieViewModelType {
     func fetchMovies() -> Driver<Result<[Movie]>>
-    
 }
 
 struct MovieViewModel : MovieViewModelType {
-    
-    init() {
-    }
-    
     func fetchMovies() -> Driver<Result<[Movie]>> {
         return NetworkingLayer.fetchRepositories()
     }
-    
-    
 }

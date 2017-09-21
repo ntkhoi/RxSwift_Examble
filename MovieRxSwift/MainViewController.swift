@@ -11,12 +11,15 @@ import RxCocoa
 import RxSwift
 
 class MainViewController: UIViewController, UITableViewDelegate {
-
+    
     fileprivate var navigator: Navigator!
     fileprivate var viewModel: MovieViewModelType!
     fileprivate let disposeBag = DisposeBag()
     
-    fileprivate var movies: Observable<[Movie]>?
+    
+    private var movies = Variable<[Movie]>([])
+    private var fetchedMovies: [Movie]  = []
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView! {
         didSet{
@@ -33,36 +36,43 @@ class MainViewController: UIViewController, UITableViewDelegate {
     }
     
     override func viewDidLoad() {
-        self.navigationItem.title = "Home Scene"
         super.viewDidLoad()
+        self.navigationItem.title = "Home Scene"
         
-        movies = viewModel
-          .fetchMovies().debug()
-          .map { (result) -> [Movie] in
-            switch result {
-            case .success(let movies):
-                return movies
-            case .failure(let error):
-                print("Fetch Movie error : \(error.localizedDescription)")
-                return []
-            }
-        }.asObservable()
+        viewModel
+            .fetchMovies().debug()
+            .map { (result) -> [Movie] in
+                switch result {
+                case .success(let movies):
+                    print("case .success(let movies):")
+                    self.fetchedMovies = movies
+                    self.movies.value = movies
+                    return movies
+                case .failure(let error):
+                    print("Fetch Movie error : \(error.localizedDescription)")
+                    return []
+                }
+            }.asObservable()
+            .subscribe()
+            .addDisposableTo(disposeBag)
         
-        
-        // Not finish yet
-        searchBar.rx.text.orEmpty
-        .debounce(0.3, scheduler: MainScheduler.instance)
-        .distinctUntilChanged()
-        .filter { !$0.isEmpty }
-        .subscribe(onNext: { [unowned self] (query) in
-            self.movies = self.movies?
-                .map{ $0.filter{ $0.title.contains(query)} }
-        }).addDisposableTo(disposeBag)
-        
-        movies?.bind(to: tableView.rx.items(cellIdentifier: String(describing: MovieCell.self), cellType: MovieCell.self)) {  row, movie, cell in
+        movies.asObservable()
+            .bind(to: tableView.rx.items(cellIdentifier: String(describing: MovieCell.self), cellType: MovieCell.self)) {
+                row, movie, cell in
                 cell.movie = movie
-            
-        }.addDisposableTo(disposeBag)
+            }.addDisposableTo(disposeBag)
+        
+        
+        searchBar.rx.text.orEmpty
+            .debounce(0.3, scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [unowned self] (query) in
+                if query == "" {
+                    self.movies.value = self.fetchedMovies
+                } else {
+                    self.movies.value = self.fetchedMovies.filter{ $0.title.lowercased().contains(query.lowercased()) }
+                }
+            }).addDisposableTo(disposeBag)
     }
     
     override func didReceiveMemoryWarning() {
