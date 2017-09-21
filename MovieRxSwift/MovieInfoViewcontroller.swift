@@ -34,8 +34,10 @@ class MovieInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Binding the UI
-        viewModel.title.debug()
+        // TODO:
+        // Change to binding UI to view model .
+        
+        viewModel.title
             .bind(to: titleLabel.rx.text)
             .addDisposableTo(disposeBag)
         
