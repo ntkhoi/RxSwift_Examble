@@ -18,6 +18,7 @@ protocol MovieViewModelType {
 }
 
 struct MovieViewModel : MovieViewModelType {
+
     func fetchMovies() -> Driver<Result<[Movie]>> {
         return NetworkingLayer.fetchRepositories()
     }

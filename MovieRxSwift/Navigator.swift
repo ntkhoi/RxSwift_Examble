@@ -16,6 +16,7 @@ class Navigator {
     // MARK: - segues list
     enum Segue {
         case listMovies()
+        case movieInfo(movie: Movie)
     }
     
     // MARK: - invoke a single segue
@@ -25,7 +26,12 @@ class Navigator {
             //show the combined Movie for the list
             let vm = MovieViewModel()
             show(target: MainViewController.createWith(navigator: self, storyboard: sender.storyboard ?? defaultStoryboard, viewModel: vm), sender: sender)
+            
+        case .movieInfo(let movie):
+            let vm = MovieInfoViewModel(movie: movie)
+            show(target: MovieInfoViewController.createWith(navigator: self, storyboard: sender.storyboard ?? defaultStoryboard, viewModel: vm), sender: sender)
         }
+        
     }
     
     private func show(target: UIViewController, sender: UIViewController) {

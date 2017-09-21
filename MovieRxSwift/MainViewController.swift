@@ -19,8 +19,9 @@ class MainViewController: UIViewController, UITableViewDelegate {
     fileprivate let disposeBag = DisposeBag()
     
     // TODO : Movie search logic to viewmodel
-    private var movies = Variable<[Movie]>([])
-    private var fetchedMovies: [Movie]  = []
+    
+    fileprivate var movies = Variable<[Movie]>([])
+    fileprivate var fetchedMovies: [Movie]  = []
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView! {
@@ -30,6 +31,9 @@ class MainViewController: UIViewController, UITableViewDelegate {
         }
     }
     
+    
+    // Duplicate in each VC
+    // TODO : Create generic method to new ViewController
     static func createWith(navigator: Navigator, storyboard: UIStoryboard, viewModel: MovieViewModelType) -> MainViewController {
         let vc = storyboard.instantiateViewController(ofType: MainViewController.self)
         vc.navigator = navigator
@@ -75,5 +79,16 @@ class MainViewController: UIViewController, UITableViewDelegate {
                     self.movies.value = self.fetchedMovies.filter{ $0.title.lowercased().contains(query.lowercased()) }
                 }
             }).addDisposableTo(disposeBag)
+        
+        
+        // TODO : Move this.navigator to viewmodels
+        tableView
+            .rx
+            .modelSelected(Movie.self)
+            .subscribe(onNext: { [weak self] (movie) in
+                guard let this = self else { return }
+                this.navigator.show(segue: .movieInfo(movie: movie), sender: this)
+            })
+            .addDisposableTo(disposeBag)
     }
 }

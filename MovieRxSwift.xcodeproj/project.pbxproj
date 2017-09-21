@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DA1837DF1F701A9000BB10F5 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1837DE1F701A9000BB10F5 /* MovieCell.swift */; };
+		DA28E9671F73738000939884 /* MovieInfoViewcontroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA28E9661F73738000939884 /* MovieInfoViewcontroller.swift */; };
+		DA28E9691F73932B00939884 /* MovieInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA28E9681F73932B00939884 /* MovieInfoViewModel.swift */; };
 		DA9FA3A01F6D976E00C68978 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9FA39F1F6D976E00C68978 /* AppDelegate.swift */; };
 		DA9FA3A21F6D976E00C68978 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9FA3A11F6D976E00C68978 /* MainViewController.swift */; };
 		DA9FA3A51F6D976E00C68978 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA9FA3A31F6D976E00C68978 /* Main.storyboard */; };
@@ -28,6 +30,8 @@
 		AA8058B83C01B5DC93A3FEFB /* Pods-MovieRxSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieRxSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieRxSwift/Pods-MovieRxSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		D28F18DCDE0991D281E0BA80 /* Pods_MovieRxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieRxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1837DE1F701A9000BB10F5 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		DA28E9661F73738000939884 /* MovieInfoViewcontroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieInfoViewcontroller.swift; sourceTree = "<group>"; };
+		DA28E9681F73932B00939884 /* MovieInfoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieInfoViewModel.swift; sourceTree = "<group>"; };
 		DA9FA39C1F6D976E00C68978 /* MovieRxSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieRxSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA9FA39F1F6D976E00C68978 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA9FA3A11F6D976E00C68978 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -103,8 +107,8 @@
 			isa = PBXGroup;
 			children = (
 				DAFBFD061F6FC15800614C59 /* Cross Platform Extensions */,
-				DA9FA3B71F6E982400C68978 /* ViewModel */,
 				DA9FA3B41F6DA08400C68978 /* Model */,
+				DA9FA3B71F6E982400C68978 /* ViewModel */,
 				DA9FA3B11F6D9A6F00C68978 /* Network */,
 				DA9FA3BB1F6E999E00C68978 /* ViewController */,
 				DA1837DD1F701A7200BB10F5 /* View */,
@@ -136,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				DA9FA3B81F6E988E00C68978 /* MoviesViewModel.swift */,
+				DA28E9681F73932B00939884 /* MovieInfoViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 				DA9FA39F1F6D976E00C68978 /* AppDelegate.swift */,
 				DA9FA3A11F6D976E00C68978 /* MainViewController.swift */,
 				DA9FA3BC1F6E99AA00C68978 /* Navigator.swift */,
+				DA28E9661F73738000939884 /* MovieInfoViewcontroller.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -309,10 +315,12 @@
 				DAFBFD0B1F6FC15800614C59 /* Storyboard+.swift in Sources */,
 				DAFBFD0A1F6FC15800614C59 /* Reachability+.swift in Sources */,
 				DA9FA3A21F6D976E00C68978 /* MainViewController.swift in Sources */,
+				DA28E9691F73932B00939884 /* MovieInfoViewModel.swift in Sources */,
 				DA9FA3B31F6DA05700C68978 /* NetworkingLayer.swift in Sources */,
 				DA9FA3B61F6DA09000C68978 /* Movie.swift in Sources */,
 				DAFBFD0C1F6FC15800614C59 /* TableView+.swift in Sources */,
 				DA9FA3A01F6D976E00C68978 /* AppDelegate.swift in Sources */,
+				DA28E9671F73738000939884 /* MovieInfoViewcontroller.swift in Sources */,
 				DA9FA3B91F6E988E00C68978 /* MoviesViewModel.swift in Sources */,
 				DA1837DF1F701A9000BB10F5 /* MovieCell.swift in Sources */,
 				DA9FA3BD1F6E99AA00C68978 /* Navigator.swift in Sources */,
